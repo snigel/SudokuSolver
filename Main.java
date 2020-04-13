@@ -4,5 +4,9 @@ public class Main {
         sudoku.solve();
         sudoku.check();
         sudoku.print();
+        sudoku.newGame(Puzzles.ezboard);
+        sudoku.solve();
+        sudoku.check();
+        sudoku.print();
     }
 }

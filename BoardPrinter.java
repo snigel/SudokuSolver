@@ -1,8 +1,5 @@
-import java.util.Map;
-import java.util.Set;
-
 public class BoardPrinter {
-    Board boardSet;
+    private final Board boardSet;
 
     public BoardPrinter(Board board){
         this.boardSet = board;

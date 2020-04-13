@@ -2,7 +2,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class BoardChecker {
-    Board board;
+    private final Board board;
 
     public BoardChecker(Board board){
         this.board = board;

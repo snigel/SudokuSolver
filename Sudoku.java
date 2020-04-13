@@ -1,16 +1,17 @@
-import java.util.*;
-
 public class Sudoku {
-    private Board board;
     private BoardChecker checker;
     private BoardSolver solver;
     private BoardPrinter printer;
 
     public Sudoku(int[][] board) {
-        this.board = new Board(board);
-        this.solver = new BoardSolver(this.board);
-        this.printer = new BoardPrinter(this.board);
-        this.checker = new BoardChecker(this.board);
+        newGame(board);
+    }
+
+    public void newGame(int[][] boardArr){
+        Board board = new Board(boardArr);
+        this.solver = new BoardSolver(board);
+        this.printer = new BoardPrinter(board);
+        this.checker = new BoardChecker(board);
     }
 
     public void solve(){

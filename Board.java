@@ -18,7 +18,7 @@ public class Board {
         return getAll(row, col).iterator().next();
     }
 
-    public void remove(int row, int col, Collection set){
+    public void remove(int row, int col, Set<Integer> set){
         int before = size(row, col);
         getAll(row, col).removeAll(set);
         int after = size(row, col);
