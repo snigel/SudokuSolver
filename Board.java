@@ -3,6 +3,7 @@ import java.util.*;
 public class Board {
     final private int[][] board;
     private Map<Integer, Set<Integer>> boardSet;
+    private int size;
 
     public Board(int[][] board) {
         this.board = board;
@@ -18,15 +19,18 @@ public class Board {
     }
 
     public void remove(int row, int col, Collection set){
+        int before = size(row, col);
         getAll(row, col).removeAll(set);
+        int after = size(row, col);
+        size -= (before-after);
+    }
+
+    public boolean isDone(){
+        return size == 81;
     }
 
     public boolean knownValue(int row, int col){
         return size(row, col) == 1;
-    }
-
-    public boolean unknown(int row, int col){
-        return !knownValue(row, col);
     }
 
     public int size(int row, int col){
@@ -35,6 +39,7 @@ public class Board {
 
     public void resetBoard(){
         this.boardSet = new HashMap<>();
+        size = 0;
         initBoardSet(board);
     }
 
@@ -45,9 +50,11 @@ public class Board {
             for(int col=0; col<9; col++){
                 if(board[row][col] == 0){
                     boardSet.put(c(row, col), new HashSet<>(Arrays.asList(newSet)));
+                    size += 9;
                 } else{
                     boardSet.put(c(row, col), new HashSet<>());
                     boardSet.get(c(row, col)).add(board[row][col]);
+                    size += 1;
                 }
             }
         }

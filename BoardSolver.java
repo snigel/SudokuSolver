@@ -8,26 +8,23 @@ public class BoardSolver {
     }
 
     public int solveBoard(){
-        int size = 0;
-        Set<Integer> coordinate;
-        for (int row = 0; row < 9; row++) {
-            for (int col = 0; col < 9; col++) {
-                if(sudoku.unknown(row, col))
-                    sudoku.remove(row,col,excludeFromRow(row));
-                if(sudoku.unknown(row, col))
-                    sudoku.remove(row,col,excludeFromCol(col));
-                if(sudoku.unknown(row, col))
-                    sudoku.remove(row,col,excludeFromBox(row, col));
-                if(sudoku.unknown(row, col))
-                    sudoku.remove(row,col,deduceFromBox(row, col));
-                size += sudoku.size(row, col);
+        int loops = 0;
+        while(!sudoku.isDone()) {
+            for (int row = 0; row < 9; row++) {
+                for (int col = 0; col < 9; col++) {
+                    if (!sudoku.knownValue(row, col))
+                        sudoku.remove(row, col, excludeFromRow(row));
+                    if (!sudoku.knownValue(row, col))
+                        sudoku.remove(row, col, excludeFromCol(col));
+                    if (!sudoku.knownValue(row, col))
+                        sudoku.remove(row, col, excludeFromBox(row, col));
+                    if (!sudoku.knownValue(row, col))
+                        sudoku.remove(row, col, deduceFromBox(row, col));
+                }
             }
+            loops++;
         }
-        if(size > 81){
-            return 1 + solveBoard();
-        } else {
-            return 1;
-        }
+        return loops;
     }
 
     private Set<Integer> excludeFromCol(int col){
