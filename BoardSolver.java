@@ -1,23 +1,24 @@
 import java.util.*;
 
 public class BoardSolver {
-    private Map<Integer, HashSet> boardSet;
+    private final Map<Integer, Set<Integer>> boardSet;
 
     public BoardSolver(int[][] board) {
-        this.boardSet = new HashMap<Integer, HashSet>();
+        this.boardSet = new HashMap<>();
         initBoardSet(board);
-        System.out.println("Needed " + solveBoard() + " loops to solve.");
+
+        System.out.println("Took " + solveBoard() + " loops to solve Sudoku.");
     }
 
     public void initBoardSet(int[][] board){
         Integer[] newSet = {1,2,3,4,5,6,7,8,9};
-        for(int i=0; i<9; i++){
-            for(int j=0; j<9; j++){
-                if(board[i][j]==0){
-                    boardSet.put((10*i + j), new HashSet<>(Arrays.asList(newSet)));
+        for(int row=0; row<9; row++){
+            for(int col=0; col<9; col++){
+                if(board[row][col] == 0){
+                    boardSet.put(c(row, col), new HashSet<>(Arrays.asList(newSet)));
                 } else{
-                    boardSet.put((10*i + j), new HashSet<>());
-                    boardSet.get(10*i + j).add(board[i][j]);
+                    boardSet.put(c(row, col), new HashSet<>());
+                    boardSet.get(c(row, col)).add(board[row][col]);
                 }
             }
         }
@@ -25,32 +26,24 @@ public class BoardSolver {
 
     public int solveBoard(){
         int size = 0;
-
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                // Exclude from row.
-                if (boardSet.get((10 * i + j)).size() > 1) {
-                    boardSet.get((10 * i + j)).removeAll(excludeFromRow(i));
-                }
-                if (boardSet.get((10 * i + j)).size() > 1) {
-                    boardSet.get((10 * i + j)).removeAll(excludeFromCol(j));
-              }
-                if (boardSet.get((10 * i + j)).size() > 1) {
-                    boardSet.get((10 * i + j)).removeAll(excludeFromBox(i, j));
-                    if(boardSet.get((10 * i + j)).size() == 0){
-                        System.out.println("3");
-                    }                    }
-                if (boardSet.get((10 * i + j)).size() > 1) {
-                    boardSet.get((10 * i + j)).removeAll(ruleOutFromBoxAlts(i, j));
-
-                }
-                size += boardSet.get((10 * i + j)).size();
+        Set<Integer> coordinate;
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                coordinate = boardSet.get(c(row, col));
+                if(coordinate.size() >1)
+                    coordinate.removeAll(excludeFromRow(row));
+                if(coordinate.size() >1)
+                    coordinate.removeAll(excludeFromCol(col));
+                if(coordinate.size() >1)
+                    coordinate.removeAll(excludeFromBox(row, col));
+                if(coordinate.size() >1)
+                    coordinate.removeAll(deduceFromBox(row, col));
+                size += coordinate.size();
             }
         }
-        if(size>81){
+        if(size > 81){
             return 1 + solveBoard();
-        }
-        else{
+        } else {
             return 1;
         }
     }
@@ -59,8 +52,8 @@ public class BoardSolver {
         Set<Integer> colSet = new HashSet<>();
 
         for(int row=0; row<9; row++){
-            if(boardSet.get((10 * row + col)).size() == 1){
-                colSet.add((Integer) boardSet.get((10 * row + col)).iterator().next());
+            if(boardSet.get(c(row, col)).size() == 1){
+                colSet.add(boardSet.get(c(row, col)).iterator().next());
             }
         }
         return colSet;
@@ -69,22 +62,23 @@ public class BoardSolver {
     public Set<Integer> excludeFromRow(int row){
         Set<Integer> rowSet = new HashSet<>();
         for(int col=0; col<9; col++){
-            if(boardSet.get((10 * row + col)).size() == 1){
-                rowSet.add((Integer) boardSet.get((10 * row + col)).iterator().next());
+            if(boardSet.get(c(row, col)).size() == 1){
+                rowSet.add(boardSet.get(c(row, col)).iterator().next());
             }
         }
         return rowSet;
     }
     public Set<Integer> excludeFromBox(int r, int c){
-        int trow = (r/3)*3;
-        int tcol = (c/3)*3;
+        // Modify input coords to point to the start
+        // of a box, instead of within it.
+        int boxRow = (r/3)*3;
+        int boxCol = (c/3)*3;
 
         Set<Integer> boxSet = new HashSet<>();
-
-        for(int row=trow; row < trow+3; row++){
-            for(int col=tcol; col < tcol+3; col++){
-                if(boardSet.get((10 * row + col)).size() == 1){
-                    boxSet.add((Integer) boardSet.get((10 * row + col)).iterator().next());
+        for(int row=boxRow; row < boxRow+3; row++){
+            for(int col=boxCol; col < boxCol+3; col++){
+                if(boardSet.get(c(row, col)).size() == 1){
+                    boxSet.add(boardSet.get(c(row, col)).iterator().next());
                 }
 
             }
@@ -92,89 +86,51 @@ public class BoardSolver {
         return boxSet;
     }
 
-    public Set<Integer> ruleOutFromBoxAlts(int r, int c){
-        int trow = (r/3)*3;
-        int tcol = (c/3)*3;
+    public Set<Integer> deduceFromBox(int r, int c){
+        // Checks if there's one single value that no neighbors
+        // in the box can have.
+        int boxRow = (r/3)*3;
+        int boxCol = (c/3)*3;
         Set<Integer> boxSet = new HashSet<>();
 
-        for(int row=trow; row < trow+3; row++){
-            for(int col=tcol; col < tcol+3; col++){
+        for(int row=boxRow; row < boxRow+3; row++){
+            for(int col=boxCol; col < boxCol+3; col++){
                 if(!(col==c && row==r)){ //Exclude current coordinates.
-                    boxSet.addAll(boardSet.get((10 * row + col)));
+                    boxSet.addAll(boardSet.get(c(row, col)));
                 }
             }
         }
 
-        //Make a copy of current coordinates.
-        Set<Integer> testSet = new HashSet<Integer>();
-        testSet.addAll(boardSet.get((10*r + c)));
-
-        //Remove the union from the copy.
+        //Make a work copy of current coordinates.
+        Set<Integer> testSet = new HashSet<>(boardSet.get(c(r, c)));
         testSet.removeAll(boxSet);
 
+        //If result has one remaining number, return boxSet to do removeAll on.
+        //else, return empty set that is safe to remove from current coord.
         if(testSet.size() == 1){
-            //If result has one remaining number, return boxSet to do removeAll on.
             return boxSet;
-        }
-        else{
-            //Return an empty set, that is safe to do removeAll on.
-            return new HashSet<Integer>();
+        } else {
+            return new HashSet<>();
         }
     }
 
     public int[][] getSolvedBoard(){
-        int[][] tboard = new int[9][9];
-        for(int i=0; i<9; i++){
-            for(int j=0; j<9; j++){
-                    tboard[i][j] = (int) boardSet.get(c(i, j)).iterator().next();
+        int[][] board = new int[9][9];
+        for(int row=0; row<9; row++){
+            for(int col=0; col<9; col++){
+                    board[row][col] = boardSet.get(c(row, col)).iterator().next();
                 }
             }
-        return tboard;
+        return board;
     }
 
     private int c(int row, int col){
-        //Converts row,col to row*10+col
-        //ie 2,3 becomes 23.
+        //Converts row,col to a single value for hashmap key.
+        //2,3 becomes 23.
         return row * 10 + col;
     }
 
-    public void print(){
-        for(int i=0; i<9; i++) {
-            if(i%3==0){
-                System.out.println("-------------");
-            }
-            for (int j = 0; j < 9; j++) {
-                if(j%3==0){
-                    System.out.print("|");
-                }
-                if(boardSet.get((10 * i + j)).size() == 1){
-                    System.out.print(boardSet.get((10 * i + j)).iterator().next().toString());
-                } else {
-                    System.out.print("_");
-                }
-
-            }
-            System.out.print("|");
-            System.out.println("");
-
-        }
-    }
-
-    public void printSize(){
-        for(int i=0; i<9; i++) {
-            if(i%3==0){
-                System.out.println("-------------");
-            }
-            for (int j = 0; j < 9; j++) {
-                if(j%3==0){
-                    System.out.print("|");
-                }
-                System.out.print(boardSet.get((10 * i + j)).size());
-
-            }
-            System.out.print("|");
-            System.out.println("");
-
-        }
+    public Map<Integer, Set<Integer>> getBoardSet() {
+        return this.boardSet;
     }
 }

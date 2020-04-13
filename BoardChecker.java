@@ -2,7 +2,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class BoardChecker {
-    private int[][] board;
+    private final int[][] board;
 
     public BoardChecker(int[][] board){
         this.board = board;

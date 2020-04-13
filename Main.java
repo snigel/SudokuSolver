@@ -27,7 +27,7 @@ public class Main {
             {3,0,0, 0,0,0, 5,0,0}
         };
         BoardSolver boardSolver = new BoardSolver(ggboard);
-        boardSolver.print();
-        BoardChecker myCheck = new BoardChecker(boardSolver.getSolvedBoard());
+        BoardPrinter.print(boardSolver.getBoardSet());
+        new BoardChecker(boardSolver.getSolvedBoard());
     }
 }
