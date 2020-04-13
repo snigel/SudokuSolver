@@ -4,10 +4,18 @@ public class Board {
     final private int[][] board;
     private Map<Integer, Set<Integer>> boardSet;
     private int size;
+    private boolean changed;
 
     public Board(int[][] board) {
         this.board = board;
+        this.changed = false;
         resetBoard();
+    }
+
+    public boolean changed(){
+        boolean temp = changed;
+        changed = false;
+        return temp;
     }
 
     public Set<Integer> getAll(int row, int col){
@@ -23,6 +31,9 @@ public class Board {
         getAll(row, col).removeAll(set);
         int after = size(row, col);
         size -= (before-after);
+        if(before!=after){
+            changed = true;
+        }
     }
 
     public boolean isDone(){

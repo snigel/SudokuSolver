@@ -23,6 +23,9 @@ public class BoardSolver {
                 }
             }
             loops++;
+            if(!board.changed()){
+                return -1;
+            }
         }
         return loops;
     }
