@@ -2,14 +2,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class BoardChecker {
-    private final int[][] board;
+    Board board;
 
-    public BoardChecker(int[][] board){
+    public BoardChecker(Board board){
         this.board = board;
-        checkAll();
     }
 
-    private void checkAll(){
+    public void check(){
         boolean correct = true;
         for(int col=0; col<9; col++){
             if(!checkCol(col)){
@@ -40,7 +39,7 @@ public class BoardChecker {
         Set<Integer> colSet = new HashSet<>();
 
         for(int row=0; row<9; row++){
-            colSet.add(board[row][col]);
+            colSet.add(board.getValue(row, col));
         }
         return colSet.size() == 9;
     }
@@ -48,7 +47,7 @@ public class BoardChecker {
     public boolean checkRow(int row){
         Set<Integer> rowSet = new HashSet<>();
         for(int col=0; col<9; col++){
-            rowSet.add(board[row][col]);
+            rowSet.add(board.getValue(row, col));
         }
         return rowSet.size() == 9;
     }
@@ -57,9 +56,9 @@ public class BoardChecker {
         Set<Integer> boxSet = new HashSet<>();
         int boxRow = row*3;
         int boxCol = col*3;
-        for(int i=boxRow; i < 3+boxRow; i++){
-            for(int j=boxCol; j < 3+boxCol; j++){
-                boxSet.add(board[i][j]);
+        for(int r=boxRow; r < 3+boxRow; r++){
+            for(int c=boxCol; c < 3+boxCol; c++){
+                boxSet.add(board.getValue(r, c));
             }
         }
         return boxSet.size() == 9;

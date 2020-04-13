@@ -2,21 +2,26 @@ import java.util.Map;
 import java.util.Set;
 
 public class BoardPrinter {
-    public static void print(Map<Integer, Set<Integer>> boardSet){
-        Set<Integer> coordinate;
+    Board boardSet;
+
+    public BoardPrinter(Board board){
+        this.boardSet = board;
+    }
+
+    public void print(){
         for(int row = 0; row < 9; row++) {
             if(row % 3 == 0){
                 System.out.println("-------------");
             }
             for (int col = 0; col < 9; col++) {
-                coordinate = boardSet.get(10*row+col);
                 if(col%3==0){
                     System.out.print("|");
                 }
-                if(coordinate.isEmpty()){
-                    System.out.print("_");
+                if(boardSet.knownValue(row, col)){
+                    System.out.print(boardSet.getValue(row, col).toString());
+
                 } else {
-                    System.out.print(coordinate.iterator().next().toString());
+                    System.out.print("_");
                 }
             }
             System.out.println("|");
@@ -24,7 +29,7 @@ public class BoardPrinter {
         System.out.println("-------------");
     }
 
-    public static void printSize(Map<Integer, Set<Integer>> boardSet){
+    public void printSize(){
         for(int row=0; row<9; row++) {
             if(row % 3 == 0){
                 System.out.println("-------------");
@@ -33,7 +38,7 @@ public class BoardPrinter {
                 if(col % 3 == 0){
                     System.out.print("|");
                 }
-                System.out.print(boardSet.get(10*row+col).size());
+                System.out.print(boardSet.getAll(row, col).size());
             }
             System.out.println("|");
         }
