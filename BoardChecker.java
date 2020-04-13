@@ -11,22 +11,22 @@ public class BoardChecker {
 
     private void checkAll(){
         boolean correct = true;
-        for(int i=0; i<9; i++){
-            if(!checkCol(i)){
-                System.out.println("Error at column " + i);
+        for(int col=0; col<9; col++){
+            if(!checkCol(col)){
+                System.out.println("Error at column " + col);
                 correct = false;
             }
         }
-        for(int i=0; i<9; i++){
-            if(!checkRow(i)){
-                System.out.println("Error at row " + i);
+        for(int row=0; row<9; row++){
+            if(!checkRow(row)){
+                System.out.println("Error at row " + row);
                 correct = false;
             }
         }
-        for(int i=0; i<3; i++){
-            for(int j=0; j<3; j++){
-                if(!checkBox(i, j)){
-                    System.out.println("Error in 3x3 board at " + i + ", " + j);
+        for(int row=0; row<3; row++){
+            for(int col=0; col<3; col++){
+                if(!checkBox(row, col)){
+                    System.out.println("Error in 3x3 board at " + row + ", " + col);
                     correct = false;
                 }
             }
@@ -39,16 +39,16 @@ public class BoardChecker {
     public boolean checkCol(int col){
         Set<Integer> colSet = new HashSet<>();
 
-        for(int i=0; i<9; i++){
-            colSet.add(board[i][col]);
+        for(int row=0; row<9; row++){
+            colSet.add(board[row][col]);
         }
         return colSet.size() == 9;
     }
 
     public boolean checkRow(int row){
         Set<Integer> rowSet = new HashSet<>();
-        for(int i=0; i<9; i++){
-            rowSet.add(board[row][i]);
+        for(int col=0; col<9; col++){
+            rowSet.add(board[row][col]);
         }
         return rowSet.size() == 9;
     }
@@ -57,8 +57,8 @@ public class BoardChecker {
         Set<Integer> boxSet = new HashSet<>();
         int boxRow = row*3;
         int boxCol = col*3;
-        for(int i=boxRow; i<3+boxRow; i++){
-            for(int j=boxCol; j<3+boxCol; j++){
+        for(int i=boxRow; i < 3+boxRow; i++){
+            for(int j=boxCol; j < 3+boxCol; j++){
                 boxSet.add(board[i][j]);
             }
         }
