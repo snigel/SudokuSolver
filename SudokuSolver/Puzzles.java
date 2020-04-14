@@ -1,3 +1,5 @@
+package SudokuSolver;
+
 public class Puzzles {
     public static final int[][] ezboard = new int[][] {
             {5,3,0, 0,7,0, 0,0,0},

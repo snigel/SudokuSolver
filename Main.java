@@ -1,3 +1,6 @@
+import SudokuSolver.Puzzles;
+import SudokuSolver.Sudoku;
+
 public class Main {
     public static void main(String[] args) {
         Sudoku sudoku = new Sudoku(Puzzles.ggboard);

@@ -1,3 +1,5 @@
+package SudokuSolver;
+
 import java.util.*;
 
 public class BoardSolver {

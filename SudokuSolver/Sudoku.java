@@ -1,3 +1,5 @@
+package SudokuSolver;
+
 public class Sudoku {
     private BoardChecker checker;
     private BoardSolver solver;
@@ -15,7 +17,7 @@ public class Sudoku {
     }
 
     public void solve(){
-        System.out.println("Took " + solver.solveBoard() + " loops to solve Sudoku.");
+        System.out.println("Took " + solver.solveBoard() + " loops to solve SudokuSolver.Sudoku.");
     }
 
     public void check(){

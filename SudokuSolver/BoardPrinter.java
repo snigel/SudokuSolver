@@ -1,3 +1,5 @@
+package SudokuSolver;
+
 public class BoardPrinter {
     private final Board boardSet;
 
