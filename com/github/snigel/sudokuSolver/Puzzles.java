@@ -1,4 +1,4 @@
-package SudokuSolver;
+package com.github.snigel.sudokuSolver;
 
 public class Puzzles {
     public static final int[][] ezboard = new int[][] {

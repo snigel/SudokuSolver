@@ -1,22 +1,22 @@
-package SudokuSolver;
+package com.github.snigel.sudokuSolver;
 
 public class BoardPrinter {
     private final Board boardSet;
 
-    public BoardPrinter(Board board){
+    public BoardPrinter(Board board) {
         this.boardSet = board;
     }
 
-    public void print(){
-        for(int row = 0; row < 9; row++) {
-            if(row % 3 == 0){
+    public void print() {
+        for (int row = 0; row < 9; row++) {
+            if (row % 3 == 0) {
                 System.out.println("-------------");
             }
             for (int col = 0; col < 9; col++) {
-                if(col%3==0){
+                if (col % 3 == 0) {
                     System.out.print("|");
                 }
-                if(boardSet.knownValue(row, col)){
+                if (boardSet.knownValue(row, col)) {
                     System.out.print(boardSet.getValue(row, col).toString());
 
                 } else {
@@ -28,13 +28,13 @@ public class BoardPrinter {
         System.out.println("-------------");
     }
 
-    public void printSize(){
-        for(int row=0; row<9; row++) {
-            if(row % 3 == 0){
+    public void printSize() {
+        for (int row = 0; row < 9; row++) {
+            if (row % 3 == 0) {
                 System.out.println("-------------");
             }
-            for (int col=0; col<9; col++) {
-                if(col % 3 == 0){
+            for (int col = 0; col < 9; col++) {
+                if (col % 3 == 0) {
                     System.out.print("|");
                 }
                 System.out.print(boardSet.getAll(row, col).size());

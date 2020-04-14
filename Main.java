@@ -1,5 +1,5 @@
-import SudokuSolver.Puzzles;
-import SudokuSolver.Sudoku;
+import com.github.snigel.sudokuSolver.Puzzles;
+import com.github.snigel.sudokuSolver.Sudoku;
 
 public class Main {
     public static void main(String[] args) {

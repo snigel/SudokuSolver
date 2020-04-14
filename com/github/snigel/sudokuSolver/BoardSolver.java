@@ -1,4 +1,4 @@
-package SudokuSolver;
+package com.github.snigel.sudokuSolver;
 
 import java.util.*;
 

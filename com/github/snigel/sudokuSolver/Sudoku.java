@@ -1,30 +1,30 @@
-package SudokuSolver;
+package com.github.snigel.sudokuSolver;
 
 public class Sudoku {
     private BoardChecker checker;
     private BoardSolver solver;
     private BoardPrinter printer;
 
-    public Sudoku(int[][] board) {
+    public Sudoku(final int[][] board) {
         newGame(board);
     }
 
-    public void newGame(int[][] boardArr){
+    public void newGame(final int[][] boardArr) {
         Board board = new Board(boardArr);
         this.solver = new BoardSolver(board);
         this.printer = new BoardPrinter(board);
         this.checker = new BoardChecker(board);
     }
 
-    public void solve(){
+    public void solve() {
         System.out.println("Took " + solver.solveBoard() + " loops to solve SudokuSolver.Sudoku.");
     }
 
-    public void check(){
+    public void check() {
         checker.check();
     }
 
-    public void print(){
+    public void print() {
         printer.print();
     }
 }
