@@ -1,5 +1,4 @@
-import com.github.snigel.sudokuSolver.Puzzles;
-import com.github.snigel.sudokuSolver.Sudoku;
+package com.github.snigel.sudokuSolver;
 
 public class Main {
     public static void main(String[] args) {

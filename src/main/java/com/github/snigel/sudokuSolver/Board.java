@@ -69,7 +69,7 @@ public class Board {
                     boardSet.put(c(row, col), new HashSet<>(Arrays.asList(numSet)));
                     size += 9;
                 } else {
-                    boardSet.put(c(row, col), new HashSet<>());
+                    boardSet.put(c(row, col), new HashSet<Integer>());
                     getAll(row, col).add(board[row][col]);
                     size += 1;
                 }
