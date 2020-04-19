@@ -5,56 +5,60 @@ import java.util.Set;
 
 public class BoardChecker {
     private final Board board;
+    private final Set<String> messages;
 
     public BoardChecker(Board board) {
         this.board = board;
+        this.messages = new HashSet<String>();
     }
 
-    public void check() {
-        boolean correct = true;
-        for (int col = 0; col < 9; col++) {
-            if (!checkCol(col)) {
-                System.out.println("Error at column " + col);
-                correct = false;
-            }
-        }
-        for (int row = 0; row < 9; row++) {
-            if (!checkRow(row)) {
-                System.out.println("Error at row " + row);
-                correct = false;
-            }
-        }
+    public boolean check() {
+        boolean isValid = true;
+
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
-                if (!checkBox(row, col)) {
-                    System.out.println("Error in 3x3 board at " + row + ", " + col);
-                    correct = false;
+                if( !(checkRow(row) && checkCol(col) && checkBox(row, col)) ) {
+                    isValid = false;
                 }
             }
         }
-        if (correct) {
-            System.out.println("All rows, columns and 3x3 boxes are valid!");
+        if (isValid) {
+            messages.add("All rows, columns and 3x3 boxes are valid!");
         }
+        return isValid;
     }
 
-    public boolean checkCol(int col) {
+    private boolean checkCol(int col) {
         Set<Integer> colSet = new HashSet<>();
 
         for (int row = 0; row < 9; row++) {
             colSet.add(board.getValue(row, col));
         }
-        return colSet.size() == 9;
+
+        if(colSet.size() == 9){
+            return true;
+        } else {
+            messages.add("Error at col " + col);
+            return false;
+        }
     }
 
-    public boolean checkRow(int row){
+    private boolean checkRow(int row){
         Set<Integer> rowSet = new HashSet<>();
+
         for(int col = 0; col < 9; col++){
             rowSet.add(board.getValue(row, col));
         }
-        return rowSet.size() == 9;
+
+        if(rowSet.size() == 9){
+            return true;
+        } else {
+            messages.add("Error at row " + row);
+            return false;
+        }
     }
 
-    public boolean checkBox(int row, int col) {
+    private boolean checkBox(int row, int col) {
         Set<Integer> boxSet = new HashSet<>();
         int boxRow = row * 3;
         int boxCol = col * 3;
@@ -63,6 +67,17 @@ public class BoardChecker {
                 boxSet.add(board.getValue(r, c));
             }
         }
-        return boxSet.size() == 9;
+
+        if(boxSet.size() == 9){
+            return true;
+        } else {
+            messages.add("Error in 3x3 board at " + row + ", " + col);
+            return false;
+        }
     }
+
+    public Set<String> getMessages(){
+        return messages;
+    }
+
 }

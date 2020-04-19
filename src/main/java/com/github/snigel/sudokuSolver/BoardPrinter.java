@@ -1,5 +1,8 @@
 package com.github.snigel.sudokuSolver;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class BoardPrinter {
     private final Board boardSet;
 
@@ -7,40 +10,46 @@ public class BoardPrinter {
         this.boardSet = board;
     }
 
-    public void print() {
+    public String print() {
+        String output = "";
+
         for (int row = 0; row < 9; row++) {
             if (row % 3 == 0) {
-                System.out.println("-------------");
+                output += ("-------------\n");
             }
             for (int col = 0; col < 9; col++) {
                 if (col % 3 == 0) {
-                    System.out.print("|");
+                    output += ("|");
                 }
                 if (boardSet.knownValue(row, col)) {
-                    System.out.print(boardSet.getValue(row, col).toString());
+                    output += (boardSet.getValue(row, col).toString());
 
                 } else {
-                    System.out.print("_");
+                    output += ("_");
                 }
             }
-            System.out.println("|");
+            output += ("|\n");
         }
-        System.out.println("-------------");
+        output += ("-------------");
+        return output;
     }
 
-    public void printSize() {
+    public String printSize() {
+        String output = "";
+
         for (int row = 0; row < 9; row++) {
             if (row % 3 == 0) {
-                System.out.println("-------------");
+                output += ("-------------\n");
             }
             for (int col = 0; col < 9; col++) {
                 if (col % 3 == 0) {
-                    System.out.print("|");
+                    output += ("|");
                 }
-                System.out.print(boardSet.getAll(row, col).size());
+                output += (boardSet.getAll(row, col).size());
             }
-            System.out.println("|");
+            output += ("|\n");
         }
-        System.out.println("-------------");
+        output += ("-------------");
+        return output;
     }
 }
